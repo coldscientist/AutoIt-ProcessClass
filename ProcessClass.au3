@@ -1,6 +1,6 @@
 #cs ----------------------------------------------------------------------------
 
- AutoIt Version: 3.3.14.2
+ AutoIt Version: 3.3.14.5
  Author:         Eduardo Mozart de Oliveira
 
  Script Function:
@@ -38,3 +38,22 @@ Func _ProcessName($pid)
     Next
     Return -1
 EndFunc
+
+; Function for getting HWND from PID
+; https://www.autoitscript.com/wiki/FAQ#How_can_I_get_a_window_handle_when_all_I_have_is_a_PID.3F
+Func _GetHwndFromPID($PID)
+	$hWnd = 0
+	$winlist = WinList()
+	Do
+		For $i = 1 To $winlist[0][0]
+			If $winlist[$i][0] <> "" Then
+				$iPID2 = WinGetProcess($winlist[$i][1])
+				If $iPID2 = $PID Then
+					$hWnd = $winlist[$i][1]
+					ExitLoop
+				EndIf
+			EndIf
+		Next
+	Until $hWnd <> 0
+	Return $hWnd
+EndFunc;==>_GetHwndFromPID
